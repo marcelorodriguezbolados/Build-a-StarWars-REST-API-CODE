@@ -40,11 +40,11 @@ class People (db.Model):
             }
 
 class Planet (db.Model):
-    id= db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id= db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String(30), unique=False, nullable=False)
-    population=db.Column(db.Integer, primary_key=True)
-    terrain= db.Column(db.String(25), unique=False, nullable=False)
-    climate= db.Column(db.String(25), unique=False, nullable=False)
+    gender=db.Column(db.String(30), unique=False, nullable=False)
+    hair_color=db.Column(db.String(25), unique=False, nullable=False)
+    skin_color=db.Column(db.String(25), unique=False, nullable=False)
 
     def __repr__(self):
             return '<Planet %r>' % self.name
