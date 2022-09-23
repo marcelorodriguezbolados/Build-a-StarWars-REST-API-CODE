@@ -80,6 +80,52 @@ def get_planet_favorite():
     planet_fav = list( map(lambda planet_fav:planet_fav.serialize(), planet_fav))
     return jsonify(planet_fav)
 
+@app.route('/People/Favorite_people/<int:people_id>', methods=['POST'])
+def add_people_fav():
+    revisar_personaje= People.query.get(people_id)
+    user = User.query.get(1)
+    if (revisar_personaje):
+        new_fav = Favorite_people()
+        new_fav_email = user.email
+        new_fav_people_id = people_id
+        db.session.add(new_fav)
+        db.session.commit()
+        return "registrado maestro jedi"
+    else:
+        raise APIException("No existe el personaje", status_code=404)
+
+@app.route('/Planet/Favorite_planet/<int:planet_id>', methods=['POST'])
+def add_planet_fav():
+    revisar_planeta= Planet.query.get(planet_id)
+    user = User.query.get(1)
+    if (revisar_planet):
+        new_fav = Favorite_planet()
+        new_fav_email = user.email
+        new_fav_planet_id = planet_id
+        db.session.add(new_fav)
+        db.session.commit()
+        return "planeta registrado"
+    else:
+        raise APIException("No existe el planeta viajero", status_code=404)
+
+@app.route('/People/Favorite_people/<int:people_id>', methods=['DELETE'])
+def delete_people_fav(people_id):
+    eliminar_people = Favorite_people.query.filter_by(people_id=people_id).first()
+    if (eliminar_people):
+         db.session.delete(eliminar_people)
+         db.session.commit()
+         return "Personaje eliminado!"
+    else: raise APIException("No logro eliminar el personaje!", status_code=404)
+ 
+@app.route('/Planet/Favorite_planet/<int:planet_id>', methods=['DELETE'])
+def delete_planet_fav(planet_id):
+    eliminar_planet = Favorite_planet.query.filter_by(planet_id=planet_id).first()
+    if (eliminar_planet):
+         db.session.delete(eliminar_planet)
+         db.session.commit()
+         return "Planeta eliminado!"
+    else: raise APIException("No logro eliminar el planeta!", status_code=404)
+ 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
